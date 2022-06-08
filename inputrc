@@ -1,0 +1,7 @@
+set editing-mode vi
+set bind-tty-special-chars off
+"\C-l": alias-expand-line
+"\C- ": clear-screen
+"\C-a": beginning-of-line
+"\C-e": end-of-line
+"\C-w": unix-word-rubout

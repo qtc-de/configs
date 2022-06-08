@@ -1,0 +1,194 @@
+################################################################################################
+######                             general-config                                         ######
+################################################################################################
+
+# Set mod key (Mod1=<Alt>, Mod4=<Super>)
+set $mod Mod4
+
+# Configure workspace names
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
+set $ws9 9
+set $ws0 10
+set $ws11 11
+
+# Configure border style <normal|1pixel|pixel xx|none|pixel>
+# Smart borders (draw borders around container only if it is not the only container on this workspace) 
+smart_borders on
+new_window pixel 1
+new_float normal
+hide_edge_borders none
+font xft:URWGothic-Book 11
+
+# Use $mod+Mouse to drag floating windows
+floating_modifier $mod
+
+# Prevent moving back to previous workspace when switching two times
+workspace_auto_back_and_forth no
+
+# Prevent applications from stealing focus
+focus_on_window_activation none
+
+# Set default workspace locations
+workspace 1 output DP-1-2
+workspace 2 output DP-2
+workspace 3 output DP-1-1
+workspace 11 output DP-1-2
+
+# Smart gaps (gaps used if only more than one container on the workspace)
+smart_gaps on
+gaps inner 14
+gaps outer -2
+
+################################################################################################
+######                             sound-section                                          ######
+################################################################################################
+
+exec --no-startup-id volumeicon
+bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
+
+################################################################################################
+######                             binding-config                                         ######
+################################################################################################
+
+# General Stuff
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+r mode "resize"
+mode "resize" {
+        bindsym plus resize grow width 5 px or 5 ppt
+        bindsym minus resize shrink width 5 px or 5 ppt
+        bindsym Shift+plus resize grow height 5 px or 5 ppt
+        bindsym Shift+minus resize shrink height 5 px or 5 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+# Autostart applications
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id nitrogen --restore; sleep 1; compton -b
+exec --no-startup-id xautolock -time 5 -locker "i3lock -i ~/Pictures/Profile/lock.png -t -f -e"
+
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec_always --no-startup-id fix_xcursor xcursor-breeze
+
+# Window Manager Aplications
+bindsym $mod+d exec --no-startup-id "rofi -show run -modi run,window"
+bindsym $mod+p exec --no-startup-id "rofi -show pull -modi pull:~/.local/bin/pull"
+bindsym $mod+Shift+p exec --no-startup-id "rofi -show pullw -modi pullw:~/.local/bin/pull-workspace"
+bindsym $mod+o exec --no-startup-id "rofi -show swap -modi swap:~/.local/bin/swap-window"
+bindsym $mod+Shift+o exec --no-startup-id "rofi -show swaps -modi swaps:~/.local/bin/swap-workspace"
+bindsym $mod+x exec --no-startup-id "rofi -show kill -modi kill:~/.local/bin/i3kill"
+bindsym $mod+g exec --no-startup-id "rofi -show focus -modi focus:~/.local/bin/focus"
+bindsym $mod+t exec --no-startup-id pkill compton;exec notify-send 'killed compton'
+bindsym $mod+Ctrl+t exec --no-startup-id compton -b;exec notify-send 'started compton'
+bindsym $mod+n exec --no-startup-id disable-dunst
+
+# Other Applications
+bindsym $mod+Return exec --no-startup-id alacritty
+bindsym $mod+Shift+s --release exec --no-startup-id my_flameshot
+bindsym $mod+Shift+Return exec --no-startup-id i3lock -i ~/Pictures/Profile/lock.png -t -f -e
+
+# Movement and Layout
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+b workspace back_and_forth
+bindsym $mod+Shift+b move container to workspace back_and_forth; workspace back_and_forth
+
+bindsym $mod+c split h;exec notify-send 'tile horizontally'
+bindsym $mod+v split v;exec notify-send 'tile vertically'
+bindsym $mod+q split toggle
+
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle global
+
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+bindsym $mod+space focus mode_toggle
+bindsym $mod+Shift+space floating toggle
+
+bindsym $mod+a focus parent
+
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws0
+bindsym $mod+minus workspace $ws11
+
+bindsym $mod+Ctrl+1 move container to workspace $ws1
+bindsym $mod+Ctrl+2 move container to workspace $ws2
+bindsym $mod+Ctrl+3 move container to workspace $ws3
+bindsym $mod+Ctrl+4 move container to workspace $ws4
+bindsym $mod+Ctrl+5 move container to workspace $ws5
+bindsym $mod+Ctrl+6 move container to workspace $ws6
+bindsym $mod+Ctrl+7 move container to workspace $ws7
+bindsym $mod+Ctrl+8 move container to workspace $ws8
+bindsym $mod+Ctrl+9 move container to workspace $ws9
+bindsym $mod+Ctrl+0 move container to workspace $ws0
+bindsym $mod+Ctrl+minus move container to workspace $ws11
+
+bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2; workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3; workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4; workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5; workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6; workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7; workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws0; workspace $ws0
+bindsym $mod+Shift+minus move container to workspace $ws11
+
+# Auto floating configuration
+for_window [title="alsamixer"] floating enable border pixel 1
+for_window [class="calamares"] floating enable border normal
+for_window [class="Clipgrab"] floating enable
+for_window [title="File Transfer*"] floating enable
+for_window [class="Galculator"] floating enable border pixel 1
+for_window [class="GParted"] floating enable border normal
+for_window [class="Lightdm-settings"] floating enable
+for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [title="MuseScore: Play Panel"] floating enable
+for_window [class="Nitrogen"] floating enable sticky enable border normal
+for_window [class="Oblogout"] fullscreen enable
+for_window [class="octopi"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="qt5ct"] floating enable sticky enable border normal
+for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
+for_window [class="Simple-scan"] floating enable border normal
+for_window [class="Timeset-gui"] floating enable border normal
+for_window [class="Xfburn"] floating enable
+
+# Colorizazion of headlines
+# class                   border  backgr. text    indic.   child_border
+client.focused          #556064 #556064 #5d87bf #FDF6E3
+client.focused_inactive #2F3D44 #2F3D44 #5d87bf #454948
+client.unfocused        #2F3D44 #2F3D44 #5d87bf #454948
+client.urgent           #CB4B16 #FDF6E3 #5d87bf #268BD2
+client.placeholder      #000000 #0c0c0c #ffffff #000000 
+client.background       #2B2C2B

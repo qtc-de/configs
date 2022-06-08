@@ -1,0 +1,179 @@
+[colors]
+background = #222D31
+background-alt = #444
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+default = #5d87bf
+
+
+[bar/mybar]
+width = 100%
+height = 27
+radius = 0.0
+fixed-center = false
+bottom = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+border-size = 0
+padding-left = 0
+padding-right = 2
+line-size = 2
+
+module-margin-left = 2
+module-margin-right = 2
+separator = |
+
+font-0 = DejaVu Sans Mono:pixelsize=9;2
+font-1 = FontAwesome6Free:style=Solid:size=9;2
+
+modules-left = i3
+modules-center = 
+modules-right = eth vlan wlan mobile vpn filesystem memory cpu temperature battery date
+
+monitor = ${env:MONITOR:}
+
+tray-position = right
+tray-padding = 2
+
+
+[module/filesystem]
+type = internal/fs
+interval = 15
+mount-0 = /
+label-mounted = : %{F#5d87bf}%free% Free%{F-}
+
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.default}
+label-focused-padding = 2
+
+label-unfocused = %index%
+label-unfocused-padding = 2
+
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+label = : %{F#5d87bf}%percentage:02%%%{F-}
+
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = " "
+label = %{F#5d87bf}%percentage_used:02%%%{F-}
+
+
+[module/wlan]
+type = internal/network
+interface = wl0
+interval = 2.0
+format-connected = <label-connected>
+label-connected = Wifi(%{F#5d87bf}%local_ip%%{F-}): %{F#5d87bf}%signal%%%{F-}  %{F#5d87bf}%upspeed%%{F-}   %{F#5d87bf}%downspeed%%{F-} 
+udspeed-minwidth = 4
+label-disconnected = Wifi: %{F#536b80}down%{F-} 
+
+
+[module/eth]
+type = internal/network
+interface = eth1
+interval = 2.0
+udspeed-minwidth = 4
+label-connected = Eth(%{F#5d87bf}%local_ip%%{F-}): %{F#5d87bf}%linkspeed%%{F-}  %{F#5d87bf}%upspeed%%{F-}   %{F#5d87bf}%downspeed%%{F-} 
+label-disconnected = Eth: %{F#536b80}down%{F-}
+
+
+[module/vpn]
+type = custom/script
+exec = ~/.config/polybar/get-ip.sh tun0
+interval = 2.0
+label = VPN: %output%
+
+
+[module/vlan]
+type = custom/script
+exec = ~/.config/polybar/get-ip.sh vlan
+interval = 2.0
+label = VLAN: %output%
+
+
+[module/mobile]
+type = custom/script
+exec = ~/.config/polybar/get-ip.sh wwp0
+interval = 2.0
+label = Mobile: %output%
+
+
+[module/date]
+type = internal/date
+interval = 5
+date = %Y-%m-%d
+time = %H:%M:%S
+label = %date% %time%
+
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+full-at = 98
+format-charging = <label-charging>
+label-charging =  %{F#5d87bf}%percentage%%%{F-}
+format-discharging = <ramp-capacity> <label-discharging>
+label-discharging = %{F#5d87bf}%percentage%%%{F-}
+format-full = "<label-full>"
+label-full =  Fully Charged
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+format = <ramp> <label>
+format-warn = <ramp> <label-warn>
+label = %{F#5d87bf}%temperature-c%%{F-}
+label-warn = %{F#ff8c21}%temperature-c%%{F-}
+label-warn-foreground = ${colors.secondary}
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+
+[settings]
+screenchange-reload = true
+
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+; vim:ft=dosini
