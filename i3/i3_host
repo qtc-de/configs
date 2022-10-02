@@ -37,14 +37,15 @@ focus_on_window_activation none
 
 # Set default workspace locations
 workspace 1 output DP-1-2
-workspace 2 output DP-2
-workspace 3 output DP-1-1
+workspace 2 output DP-1-1
+workspace 3 output DP-2
 workspace 11 output DP-1-2
 
 # Smart gaps (gaps used if only more than one container on the workspace)
 smart_gaps on
 gaps inner 14
 gaps outer -2
+
 
 ################################################################################################
 ######                             sound-section                                          ######
@@ -53,9 +54,11 @@ gaps outer -2
 exec --no-startup-id volumeicon
 bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 
+
 ################################################################################################
 ######                             binding-config                                         ######
 ################################################################################################
+
 
 # General Stuff
 bindsym $mod+Shift+q kill
@@ -73,13 +76,15 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
+
 # Autostart applications
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nitrogen --restore; sleep 1; compton -b
-exec --no-startup-id xautolock -time 5 -locker "i3lock -i ~/Pictures/Profile/lock.png -t -f -e"
+exec --no-startup-id xautolock -time 5 -locker "systemctl --user start i3lock.service"
 
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec_always --no-startup-id fix_xcursor xcursor-breeze
+
 
 # Window Manager Aplications
 bindsym $mod+d exec --no-startup-id "rofi -show run -modi run,window"
@@ -93,10 +98,12 @@ bindsym $mod+t exec --no-startup-id pkill compton;exec notify-send 'killed compt
 bindsym $mod+Ctrl+t exec --no-startup-id compton -b;exec notify-send 'started compton'
 bindsym $mod+n exec --no-startup-id disable-dunst
 
+
 # Other Applications
 bindsym $mod+Return exec --no-startup-id alacritty
 bindsym $mod+Shift+s --release exec --no-startup-id my_flameshot
-bindsym $mod+Shift+Return exec --no-startup-id i3lock -i ~/Pictures/Profile/lock.png -t -f -e
+bindsym $mod+Shift+Return exec --no-startup-id systemctl --user start i3lock.service
+
 
 # Movement and Layout
 bindsym $mod+h focus left
@@ -112,8 +119,8 @@ bindsym $mod+Shift+l move right
 bindsym $mod+b workspace back_and_forth
 bindsym $mod+Shift+b move container to workspace back_and_forth; workspace back_and_forth
 
-bindsym $mod+c split h;exec notify-send 'tile horizontally'
-bindsym $mod+v split v;exec notify-send 'tile vertically'
+bindsym $mod+c split h;exec --no-startup-id notify-send 'tile horizontally'
+bindsym $mod+v split v;exec --no-startup-id notify-send 'tile vertically'
 bindsym $mod+q split toggle
 
 bindsym $mod+f fullscreen toggle
@@ -171,17 +178,25 @@ for_window [class="Clipgrab"] floating enable
 for_window [title="File Transfer*"] floating enable
 for_window [class="Galculator"] floating enable border pixel 1
 for_window [class="GParted"] floating enable border normal
+for_window [title="i3_help"] floating enable sticky enable border normal
 for_window [class="Lightdm-settings"] floating enable
 for_window [class="Lxappearance"] floating enable sticky enable border normal
+for_window [class="Manjaro-hello"] floating enable
+for_window [class="Manjaro Settings Manager"] floating enable border normal
 for_window [title="MuseScore: Play Panel"] floating enable
 for_window [class="Nitrogen"] floating enable sticky enable border normal
 for_window [class="Oblogout"] fullscreen enable
 for_window [class="octopi"] floating enable
+for_window [title="About Pale Moon"] floating enable
+for_window [class="Pamac-manager"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="qt5ct"] floating enable sticky enable border normal
 for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
 for_window [class="Simple-scan"] floating enable border normal
+for_window [class="(?i)System-config-printer.py"] floating enable border normal
+for_window [class="Skype"] floating enable border normal
 for_window [class="Timeset-gui"] floating enable border normal
+#for_window [class="(?i)virtualbox"] floating enable border normal
 for_window [class="Xfburn"] floating enable
 
 # Colorizazion of headlines
