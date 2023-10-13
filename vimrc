@@ -1,6 +1,5 @@
 if has("syntax")
     syntax on
-    color hilal
 endif
 
 set t_Co=256
@@ -35,6 +34,10 @@ set conceallevel=3      " Set a high conceal level
 :set statusline+=\ \ \ %l                  " Current line
 :set statusline+=/                         " Separator
 :set statusline+=%L                        " Total lines 
+
+" Unmap any functionality from the leader keys
+nnoremap - <nop>
+nnoremap \ <nop>
 
 let mapleader = "-"       " Own mappings begin with -
 let maplocalleader = '\'  " Local mappings begin with \
@@ -80,6 +83,11 @@ inoremap <Left> <nop>
 inoremap <Down> <nop>
 inoremap <Right> <nop>
 inoremap <Up> <nop>
+
+augroup filetype_git_commit
+    autocmd!
+    autocmd BufReadPost COMMIT_EDITMSG setlocal viminfofile=NONE
+augroup END
 
 augroup filetype_cpp
     autocmd!
@@ -160,4 +168,4 @@ ab tetxbf textbf
 ab teh the
 
 let g:markdown_syntax_conceal = 0
-let g:markdown_fenced_languages = ['python', 'java', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
+let g:markdown_fenced_languages = ['python', 'java', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html', 'bash', 'sh', 'c']
